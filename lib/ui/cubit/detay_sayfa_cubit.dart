@@ -6,7 +6,7 @@ class DetaySayfaCubit extends Cubit<void>{
 
   var kRepo = KisilerDaoRepository();
 
-  Future<void> guncelle(int kisi_id,String kisi_adi,String kisi_no) async{
+  Future<void> guncelle(String kisi_id,String kisi_adi,String kisi_no) async{
     await kRepo.guncelle(kisi_id, kisi_adi, kisi_no);
   }
 

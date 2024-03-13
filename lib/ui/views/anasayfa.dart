@@ -19,7 +19,7 @@ class _AnasayfaState extends State<Anasayfa> {
     print("Kişi ara: $arananKelime");
   }
 
-  Future<void> kisiSil(int kisi_id) async{
+  Future<void> kisiSil(String kisi_id) async{
     print("Silinen Kişi id: ${kisi_id}");
   }
 
@@ -37,8 +37,7 @@ class _AnasayfaState extends State<Anasayfa> {
         TextField(
           decoration: InputDecoration(hintText: "Ara"),
           onChanged: (aramaSonucu) {
-            kisiAra(aramaSonucu);
-          },
+            context.read<AnasayfaCubit>().ara(aramaSonucu);          },
         ) :
             Text("Kişiler"),
             actions: [
@@ -48,6 +47,7 @@ class _AnasayfaState extends State<Anasayfa> {
                       setState(() {
                         aramaYapiliyorMu = false;
                       });
+                      context.read<AnasayfaCubit>().kisileriListele();
                       },
                       icon: Icon(Icons.search_off_outlined)) :
                   IconButton(
@@ -73,7 +73,6 @@ class _AnasayfaState extends State<Anasayfa> {
                   child: GestureDetector(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => DetaySayfa(kisi: kisiNesnesi,)));
-                      context.read<AnasayfaCubit>().kisileriListele();
                     },
                     child: Card(
                      // color: Colors.white60,
@@ -125,7 +124,6 @@ class _AnasayfaState extends State<Anasayfa> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => KayitSayfa()));
-          context.read<AnasayfaCubit>().kisileriListele();
         },
         child: Icon(CupertinoIcons.add),
       ),
