@@ -35,11 +35,11 @@ class _AnasayfaState extends State<Anasayfa> {
       appBar: AppBar(
         title: aramaYapiliyorMu ?
         TextField(
-          decoration: InputDecoration(hintText: "Ara"),
+          decoration: const InputDecoration(hintText: "Ara"),
           onChanged: (aramaSonucu) {
             context.read<AnasayfaCubit>().ara(aramaSonucu);          },
         ) :
-            Text("Kişiler"),
+            const Text("Kişiler"),
             actions: [
               aramaYapiliyorMu ?
                   IconButton(
@@ -49,14 +49,14 @@ class _AnasayfaState extends State<Anasayfa> {
                       });
                       context.read<AnasayfaCubit>().kisileriListele();
                       },
-                      icon: Icon(Icons.search_off_outlined)) :
+                      icon: const Icon(Icons.search_off_outlined)) :
                   IconButton(
                   onPressed: () {
                     setState(() {
                       aramaYapiliyorMu = true;
                     });
                   },
-                  icon: Icon(Icons.search))
+                  icon: const Icon(Icons.search))
 
         ],
       ),
@@ -74,41 +74,46 @@ class _AnasayfaState extends State<Anasayfa> {
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => DetaySayfa(kisi: kisiNesnesi,)));
                     },
-                    child: Card(
-                     // color: Colors.white60,
-                      elevation: 10,
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(kisiNesnesi.kisi_adi,style: TextStyle(color: Colors.black,fontSize: 20),),
-                                Text(kisiNesnesi.kisi_no.toString(),style: TextStyle(color: Colors.black,fontSize: 16)),
-                              ],
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 2.0,bottom: 2.0),
+                      child: Card(
+                        color: Color(hexColor("ffc8dd")),
+                        elevation: 10,
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(kisiNesnesi.kisi_adi,style: const TextStyle(color: Colors.black,fontSize: 20),),
+                                  Text(kisiNesnesi.kisi_no.toString(),style: const TextStyle(color: Colors.black,fontSize: 16)),
+                                ],
+                              ),
                             ),
-                          ),
-                          Spacer(),
-                          IconButton(
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text("${kisiNesnesi.kisi_adi} silinsin mi?"),
-                                    action: SnackBarAction(
-                                      label: "Evet",
-                                      onPressed: () {
-                                        kisiSil(kisiNesnesi.kisi_id);
-                                      },
-                                    ),
-                                  )
-                                );
-                              },
-                              icon: Icon(CupertinoIcons.xmark))
-                        ],
-                      )
+                            const Spacer(),
+                            IconButton(
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: Colors.black,
+                                      content: Text("${kisiNesnesi.kisi_adi} silinsin mi?",style: TextStyle(fontSize: 17),),
+                                      action: SnackBarAction(
+                                        label: "EVET",
+                                        textColor: Colors.red,
+                                        onPressed: () {
+                                          context.read<AnasayfaCubit>().sil(kisiNesnesi.kisi_id);
+                                        },
+                                      ),
+                                    )
+                                  );
+                                },
+                                icon: const Icon(CupertinoIcons.xmark))
+                          ],
+                        )
 
+                      ),
                     ),
                   ),
                 );
@@ -117,17 +122,25 @@ class _AnasayfaState extends State<Anasayfa> {
             );
 
           }else{
-            return Center();
+            return const Center();
           }
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(hexColor("bde0fe")),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => KayitSayfa()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const KayitSayfa()));
         },
-        child: Icon(CupertinoIcons.add),
+        child: const Icon(CupertinoIcons.add),
       ),
 
     );
   }
+}
+
+int hexColor(String color) {
+  String newColor = '0xff' + color;
+  newColor = newColor.replaceAll('#', '');
+  int finalColor = int.parse(newColor);
+  return finalColor;
 }

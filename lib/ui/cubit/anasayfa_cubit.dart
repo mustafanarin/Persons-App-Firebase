@@ -10,22 +10,23 @@ class AnasayfaCubit extends Cubit<List<Kisiler>>{
 
   var collectionKisiler = FirebaseFirestore.instance.collection("Kisiler");
 
-  Future<void> kisileriListele() async{
-    collectionKisiler.snapshots().listen((event) {
-      var kisilerListesi = <Kisiler>[];
+    Future<void> kisileriListele() async{
+      collectionKisiler.snapshots().listen((event) {
+        var kisilerListesi = <Kisiler>[];
 
-      var documents = event.docs;
+        var documents = event.docs;
 
-      for(var document in documents){
-        var key = document.id;
-        var data = document.data();
-        var kisi = Kisiler.fromJson(data, key);
-        kisilerListesi.add(kisi);
-      }
+        for(var document in documents){
+          var key = document.id;
+          var data = document.data();
+          var kisi = Kisiler.fromJson(data, key);
+          kisilerListesi.add(kisi);
+        }
+        kisilerListesi.sort((a,b) => a.kisi_adi.compareTo(b.kisi_adi));
 
-      emit(kisilerListesi);
-    });
-  }
+        emit(kisilerListesi);
+      });
+    }
 
   Future<void> ara(String aramaKelime) async{
     collectionKisiler.snapshots().listen((event) {
@@ -45,6 +46,10 @@ class AnasayfaCubit extends Cubit<List<Kisiler>>{
 
       emit(kisilerListesi);
     });
+  }
+
+  Future<void> sil(String kisi_id) async{
+    await kRepo.sil(kisi_id);
   }
 
 }
